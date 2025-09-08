@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Heart, ShoppingCart, Grid, List, ChevronDown, Star, X, Eye } from 'lucide-react';
 import image1 from '../assets/image.png';
 import image2 from '../assets/image2.jpg';
@@ -7,17 +7,31 @@ import image4 from '../assets/image4.jpg';
 import image5 from '../assets/image5.jpg';
 import image6 from '../assets/image6.jpg';
 import { Link } from "react-router-dom";
-import Cart from'./Cart';
+
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  originalPrice: number | null;
+  discount: string | null;
+  rating: number;
+  reviews: number;
+  image: string;
+  description: string;
+  colors: string[];
+  sizes: string[];
+}
 
 const EcommerceShop = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 500]);
-  const [sortBy, setSortBy] = useState('default');
-  const [viewMode, setViewMode] = useState('grid');
-  const [showModal, setShowModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [wishlist, setWishlist] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
+  const [sortBy, setSortBy] = useState<string>('default');
+  const [viewMode, setViewMode] = useState<string>('grid');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [wishlist, setWishlist] = useState<number[]>([]);
+
 
   const categories = [
     { name: 'Accessories', count: 7 },
@@ -121,36 +135,38 @@ const EcommerceShop = () => {
     const matchesCategory = !selectedCategory || product.category.toLowerCase().includes(selectedCategory.toLowerCase());
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     return matchesCategory && matchesPrice;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'rating':
+        return b.rating - a.rating;
+      default:
+        return 0;
+    }
   });
 
-  const toggleWishlist = (productId) => {
-    setWishlist(prev => 
-      prev.includes(productId) 
+  const toggleWishlist = (productId: number) => {
+    setWishlist(prev =>
+      prev.includes(productId)
         ? prev.filter(id => id !== productId)
         : [...prev, productId]
     );
   };
 
-  const addToCart = (product) => {
-    setCart(prev => {
-      const existingItem = prev.find(item => item.id === product.id);
-      if (existingItem) {
-        return prev.map(item =>
-          item.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
+  const addToCart = (product: Product) => {
+    console.log('Adding to cart:', product.name);
+    // TODO: Implement cart functionality
   };
 
-  const openProductModal = (product) => {
+  const openProductModal = (product: Product) => {
     setSelectedProduct(product);
     setShowModal(true);
   };
 
-  const StarRating = ({ rating, reviews }) => (
+  const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) => (
     <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map(star => (
         <Star 
@@ -299,9 +315,14 @@ const EcommerceShop = () => {
                           className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors transform -translate-y-2 group-hover:translate-y-0"
                         >
                           <ShoppingCart size={18} />
-                          <Cart/>
-                         <Link to="/Cart"> Add to Cart</Link>
+                         <Link to="/Cart">Add to Cart</Link> 
                         </button>
+                        <Link 
+                          to="/Cart" 
+                          className="bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-700 transition-colors transform -translate-y-2 group-hover:translate-y-0"
+                        >
+                          View Cart
+                        </Link>
                         <button 
                           onClick={() => openProductModal(product)}
                           className="bg-gray-600 text-white p-2 rounded-lg hover:bg-gray-700 transition-colors transform -translate-y-2 group-hover:translate-y-0"

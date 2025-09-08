@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, MessageCircle, Flame, Clock, Eye, Calendar, User } from "lucide-react";
+import  { useState } from "react";
+import { ChevronLeft, ChevronRight, MessageCircle, Flame, Eye, Calendar, User } from "lucide-react";
 
 import image2 from '../assets/blog1.jpg';
 import image3 from '../assets/blog2.jpg';

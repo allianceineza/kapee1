@@ -1,5 +1,5 @@
 // Contact Component
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Phone, MapPin, Mail, Send } from "lucide-react";
 import electronicsSlider from '../assets/electronics-slider-1.png';
 
@@ -13,14 +13,14 @@ const Contact = () => {
     message: "",
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Thank you for your message! I will get back to you soon.");
     setFormData({ name: "", email: "", subject: "", message: "" });
@@ -30,16 +30,14 @@ const Contact = () => {
     <section className="text-black">
       <div className="container mx-auto">
         <div
-          className="text-center mb-12 relative min-h-[500px] min-w-[900px]"
+          className="text-center mb-12 relative min-h-[500px] bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url(${electronicsSlider})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
           }}
         >
-          <div className="bg-opacity-50 h-full flex flex-col items-center justify-center">
-            <h1 className="text-7xl mt-47 font-bold text-black">Contact Me</h1>
-            <p className="text-lg text-white">Get in Touch</p>
+          <div className="bg-black bg-opacity-50 h-full flex flex-col items-center justify-center">
+            <h1 className="text-5xl md:text-7xl mt-12 font-bold text-white drop-shadow-lg">Contact Me</h1>
+            <p className="text-lg text-white mt-4 drop-shadow-md">Get in Touch</p>
           </div>
         </div>
 
@@ -108,7 +106,7 @@ const Contact = () => {
               <textarea
                 name="message"
                 placeholder="Your Message"
-                rows="6"
+                rows={6}
                 value={formData.message}
                 onChange={handleInputChange}
                 required

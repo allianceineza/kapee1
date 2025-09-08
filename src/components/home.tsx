@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Heart, ShoppingCart, User, ChevronRight, ChevronDown, ChevronLeft, Menu, X } from 'lucide-react';
-// import { HotDealsCarousel, FeaturedProductsCarousel } from './HotDealsCarousel';
+import { Search, Heart, ShoppingCart,  ChevronRight, ChevronLeft, Menu, X } from 'lucide-react';
+
 import ProductCarouselDemo from "./HotDealsCarousel";
 import BestSellingProducts from './bestSellingProducts';
 import Freeshipping from './Freeshipping';
@@ -230,51 +230,7 @@ const KapeeStore: React.FC = () => {
     setSelectedProduct(null);
   };
 
-  const renderProductImage = (imageType: string) => {
-    switch (imageType) {
-      case 'image1':
-        return (
-          <div className="relative w-32 h-40 mx-auto">
-            <div className="w-20 h-32 bg-gradient-to-b from-teal-600 to-teal-700 rounded-t-3xl mx-auto shadow-lg"></div>
-            <div className="w-24 h-16 bg-white rounded-b-3xl mx-auto -mt-2 shadow-inner"></div>
-            <div className="absolute top-2 right-2 w-1 h-4 bg-red-500 rounded-full"></div>
-            <div className="absolute -top-1 right-8 w-8 h-1 bg-gray-600 rounded-full"></div>
-          </div>
-        );
-      case 'image2':
-        return (
-          <div className="relative w-40 h-32 mx-auto">
-            <div className="w-16 h-20 bg-gray-800 rounded-xl mx-auto shadow-lg border-2 border-gray-300">
-              <div className="w-12 h-16 bg-green-400 rounded-lg mx-auto mt-2 flex items-center justify-center">
-                <div className="text-white text-xs font-bold">7:29</div>
-              </div>
-            </div>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-white rounded-full shadow-lg"></div>
-            <div className="absolute top-6 -left-2 w-6 h-1 bg-gray-400 rounded-full"></div>
-            <div className="absolute top-8 -left-2 w-6 h-1 bg-gray-400 rounded-full"></div>
-          </div>
-        );
-      case 'image3':
-        return (
-          <div className="w-24 h-40 bg-gradient-to-br from-gray-800 to-black rounded-2xl mx-auto shadow-xl">
-            <div className="w-16 h-1 bg-black rounded-full mx-auto mt-2"></div>
-            <div className="w-20 h-32 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-xl mx-auto mt-2"></div>
-          </div>
-        );
-      case 'image4':
-        return (
-          <div className="relative w-32 h-32 mx-auto">
-            <div className="w-24 h-6 bg-gray-800 rounded-full mx-auto"></div>
-            <div className="flex justify-between mt-2">
-              <div className="w-10 h-12 bg-gray-700 rounded-full"></div>
-              <div className="w-10 h-12 bg-gray-700 rounded-full"></div>
-            </div>
-          </div>
-        );
-      default:
-        return <div className="w-32 h-32 bg-gray-300 rounded-lg mx-auto"></div>;
-    }
-  };
+
 
   const renderMainContent = () => {
     if (selectedCategory) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import electronicsSlider from '../assets/electronics-slider-1.png';
 import { Link } from "react-router-dom";
 

@@ -7,17 +7,7 @@ import { HiSquare2Stack } from "react-icons/hi2";
 import { CiMail } from "react-icons/ci";
 import { FaChevronDown, FaDollarSign } from "react-icons/fa";
 
-interface NavbarPageProps {
-  logoSrc?: string;
-  logoAlt?: string;
-  onLoginClick?: () => void;
-}
-
-const NavbarPage: React.FC<NavbarPageProps> = ({ 
-  logoSrc = "logo.png", 
-  logoAlt = "logo",
-  onLoginClick 
-}) => {
+const NavbarPage: React.FC = () => {
   
   const [model, setModel] = useState<boolean>(false);
   const [languageDropdown, setLanguageDropdown] = useState<boolean>(false);

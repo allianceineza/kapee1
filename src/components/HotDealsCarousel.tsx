@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart, ShoppingCart, Search } from 'lucide-react';
 import image1 from '../assets/image.png';
 import image2 from '../assets/image2.jpg';
-import image3 from '../assets/image3.jpg';
 import image4 from '../assets/image4.jpg';
 import image5 from '../assets/image5.jpg';
 import image6 from '../assets/image6.jpg';
@@ -17,17 +16,8 @@ interface Product {
   image: string;
   featured?: boolean;
   badge?: string;
-
-}
-
-interface HotDealsCarouselProps {
-  products: Product[];
-  onProductClick?: (product: Product) => void;
-}
-
-interface FeaturedProductsCarouselProps {
-  products: Product[];
-  onProductClick?: (product: Product) => void;
+  bgColor?: string;
+  badgeColor?: string;
 }
 
 // Sample data for Hot Deals
@@ -41,7 +31,7 @@ const hotDealsProducts: Product[] = [
     discount: "44% OFF",
     image: image1,
     badge: "44% OFF",
-   
+    bgColor: "bg-red-500",
   },
   {
     id: 2,
@@ -50,9 +40,9 @@ const hotDealsProducts: Product[] = [
     price: 55.00,
     originalPrice: 70.00,
     discount: "21% OFF",
-    image: image1,
+    image: image2,
     badge: "21% OFF",
-    
+    bgColor: "bg-blue-500",
   },
   {
     id: 3,
@@ -61,9 +51,9 @@ const hotDealsProducts: Product[] = [
     price: 45.00,
     originalPrice: 70.00,
     discount: "36% OFF",
-    image: image1,
+    image: image4,
     badge: "36% OFF",
-  
+    bgColor: "bg-green-500",
   }
 ];
 
@@ -78,7 +68,7 @@ const featuredProductsData: Product[] = [
     discount: "22% OFF",
     image: image1,
     badge: "22% OFF",
-    
+    badgeColor: "bg-red-500",
   },
   {
     id: 2,
@@ -89,7 +79,7 @@ const featuredProductsData: Product[] = [
     discount: "17% OFF",
     image: image4,
     badge: "17% OFF",
-   
+    badgeColor: "bg-blue-500",
   },
   {
     id: 3,
@@ -99,7 +89,7 @@ const featuredProductsData: Product[] = [
     image: image5,
     featured: true,
     badge: "FEATURED",
-    
+    badgeColor: "bg-green-500",
   },
   {
     id: 4,
@@ -109,7 +99,7 @@ const featuredProductsData: Product[] = [
     image: image6,
     featured: true,
     badge: "FEATURED",
-   
+    badgeColor: "bg-purple-500",
   },
   {
     id: 5,
@@ -119,7 +109,7 @@ const featuredProductsData: Product[] = [
     image: image2,
     featured: true,
     badge: "FEATURED",
-   
+    badgeColor: "bg-pink-500",
   },
   {
     id: 6,
@@ -128,7 +118,7 @@ const featuredProductsData: Product[] = [
     price: 250.00,
     image: image4,
     badge: "NEW",
-    
+    badgeColor: "bg-yellow-500",
   },
   {
     id: 7,
@@ -139,7 +129,7 @@ const featuredProductsData: Product[] = [
     discount: "40% OFF",
     image: image5,
     badge: "40% OFF",
-    
+    badgeColor: "bg-orange-500",
   },
   {
     id: 8,
@@ -148,119 +138,12 @@ const featuredProductsData: Product[] = [
     price: 599.00,
     image: image6,
     badge: "PREMIUM",
-    
+    badgeColor: "bg-black",
   }
 ];
 
-// Product image renderer
-const renderProductImage = (imageType: string) => {
-  switch (imageType) {
-    case 'image1':
-      return (
-        <div className="relative w-full h-32 flex items-center justify-center">
-          <div className="w-24 h-16 bg-white rounded-2xl border-2 border-gray-300 shadow-lg relative">
-            <div className="absolute top-2 left-2 w-2 h-2 bg-gray-800 rounded-full"></div>
-            <div className="absolute top-2 right-2 flex space-x-1">
-              <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
-              <div className="w-1 h-1 bg-green-500 rounded-full"></div>
-              <div className="w-1 h-1 bg-red-500 rounded-full"></div>
-              <div className="w-1 h-1 bg-yellow-500 rounded-full"></div>
-            </div>
-            <div className="absolute bottom-2 left-2 w-2 h-2 bg-gray-800 rounded-full"></div>
-            <div className="absolute bottom-2 right-2 w-2 h-2 bg-gray-800 rounded-full"></div>
-          </div>
-        </div>
-      );
-    case 'image2':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="w-16 h-28 bg-gradient-to-br from-gray-800 to-black rounded-xl shadow-lg relative">
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gray-700 rounded-full"></div>
-            <div className="absolute top-4 left-2 right-2 bottom-4 bg-black rounded-lg">
-              <div className="absolute top-2 left-2 right-2 h-4 bg-gradient-to-r from-orange-400 to-pink-500 rounded"></div>
-            </div>
-            <div className="absolute top-1 right-1 w-2 h-2 bg-orange-400 rounded-full"></div>
-          </div>
-        </div>
-      );
-    case 'immage4':
-    case 'image5':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="relative">
-            <div className={`w-12 h-16 ${imageType === 'apple-watch-black' ? 'bg-gray-900' : 'bg-gray-300'} rounded-xl shadow-lg border`}>
-              <div className="w-8 h-12 bg-white rounded-lg mx-auto mt-2 flex items-center justify-center">
-                <div className="text-xs text-center">
-                  <div className="w-1 h-1 bg-red-500 rounded-full mx-auto mb-1"></div>
-                  <div className="w-3 h-0.5 bg-black mb-1"></div>
-                  <div className="w-2 h-0.5 bg-black"></div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-3 bg-gray-200 rounded-full"></div>
-          </div>
-        </div>
-      );
-    case 'image1':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="w-16 h-24 bg-blue-600 rounded-2xl shadow-lg relative">
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gray-300 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-sm"></div>
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-10 h-2 bg-gray-800 rounded-full"></div>
-          </div>
-        </div>
-      );
-    case 'image2':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="relative w-20">
-            <div className="w-16 h-4 bg-gray-300 rounded-full mx-auto"></div>
-            <div className="flex justify-between mt-1">
-              <div className="w-6 h-8 bg-white border-2 border-gray-300 rounded-full"></div>
-              <div className="w-6 h-8 bg-white border-2 border-gray-300 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      );
-    case 'image3':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="flex space-x-2">
-            <div className="w-3 h-12 bg-white rounded-full shadow-md relative">
-              <div className="absolute top-1 w-2 h-2 bg-gray-800 rounded-full mx-auto"></div>
-            </div>
-            <div className="w-3 h-12 bg-white rounded-full shadow-md relative">
-              <div className="absolute top-1 w-2 h-2 bg-gray-800 rounded-full mx-auto"></div>
-            </div>
-          </div>
-        </div>
-      );
-    case 'image5':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="w-14 h-26 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl shadow-lg relative">
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-black rounded-full"></div>
-            <div className="absolute top-3 left-1 right-1 bottom-3 bg-gradient-to-br from-cyan-200 to-blue-400 rounded-xl"></div>
-          </div>
-        </div>
-      );
-    case 'image6':
-      return (
-        <div className="w-full h-32 flex items-center justify-center">
-          <div className="relative">
-            <div className="w-16 h-12 bg-white rounded-full border-2 border-gray-300 shadow-lg"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gray-800 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 rounded-full"></div>
-          </div>
-        </div>
-      );
-    default:
-      return <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">Product</div>;
-  }
-};
 // Hot Deals Carousel Component
-const HotDealsCarousel: React.FC<HotDealsCarouselProps> = ({ products, onProductClick }) => {
+const HotDealsCarousel: React.FC<{products: Product[]; onProductClick?: (product: Product) => void;}> = ({ products, onProductClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextProduct = () => {
@@ -390,7 +273,7 @@ const HotDealsCarousel: React.FC<HotDealsCarouselProps> = ({ products, onProduct
 };
 
 // Featured Products Carousel Component
-const FeaturedProductsCarousel: React.FC<FeaturedProductsCarouselProps> = ({ products, onProductClick }) => {
+const FeaturedProductsCarousel: React.FC<{products: Product[]; onProductClick?: (product: Product) => void;}> = ({ products, onProductClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 4;
 
@@ -457,7 +340,7 @@ const FeaturedProductsCarousel: React.FC<FeaturedProductsCarouselProps> = ({ pro
                   alt={product.name}
                   className="w-full h-32 object-cover rounded-lg"
                   onError={(e) => {
-                    e.currentTarget.src = "image1";
+                    e.currentTarget.src = image1;
                   }}
                 />
               </div>
