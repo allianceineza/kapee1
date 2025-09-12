@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './components/home';
-import NavbarPage from './components/Navbar';
 import FooterSide from './components/Footer';
 import FAQ from './components/FAQ';
 import Blogs from './components/Blogs';
@@ -14,7 +13,6 @@ import ForgotPasswordModel from './components/ForgotPasswordModel';
 function App() {
   return (
     <BrowserRouter>
-      <NavbarPage />
       <Routes>
         <Route path="/" element={<LayoutHandling />}>
           <Route index element={<Homepage />} />
