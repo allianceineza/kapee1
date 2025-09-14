@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './components/home';
-import NavbarPage from './components/Navbar';
 import FooterSide from './components/Footer';
 import FAQ from './components/FAQ';
 import Blogs from './components/Blogs';
@@ -19,7 +18,10 @@ import DashboardOutlet from './Dashboardkapee/DashboardOutlet';
 function App() {
   return (
     <BrowserRouter>
+<<<<<<< HEAD
       {/* <NavbarPage /> */}
+=======
+>>>>>>> 576a7dca74cee6b1c31851fca3e49a16f0c931ff
       <Routes>
         <Route path="/" element={<LayoutHandling />}>
           <Route index element={<Homepage />} />
