@@ -1,9 +1,7 @@
 // Contact Component
-import  { useState } from "react";
-import { Phone, MapPin, Mail, Send } from "lucide-react";
+import { useState } from "react";
+import { Phone, MapPin, Mail, Send, Loader } from "lucide-react";
 import electronicsSlider from '../assets/electronics-slider-1.png';
-
-
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,18 +10,47 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitError, setSubmitError] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    alert("Thank you for your message! I will get back to you soon.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+    setSubmitMessage("");
+    setSubmitError("");
+
+    try {
+      const response = await fetch('http://localhost:3000/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitMessage("Thank you for your message! I will get back to you soon.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setSubmitError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitError("Network error. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -40,8 +67,6 @@ const Contact = () => {
             <p className="text-lg text-white mt-4 drop-shadow-md">Get in Touch</p>
           </div>
         </div>
-
-        
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
           <div className="contact-info">
@@ -66,13 +91,29 @@ const Contact = () => {
                 <Mail size={24} />
                 <div>
                   <strong>Email:</strong>
-                  <a href="mailto:alliancesgiselienze@gmail.com" className="text-black hover:underline">alliancesgiselienze@gmail.com</a>
+                  <a href="mailto:alliancesgiselienze@gmail.com" className="text-black hover:underline">
+                    alliancesgiselienze@gmail.com
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="bg-opacity-5 bg-white p-8 rounded-lg border border-opacity-10">
+            {/* Success Message */}
+            {submitMessage && (
+              <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                {submitMessage}
+              </div>
+            )}
+
+            {/* Error Message */}
+            {submitError && (
+              <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                {submitError}
+              </div>
+            )}
+
             <form onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <input
@@ -82,7 +123,8 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-4 border border-opacity-20 rounded-lg"
+                  disabled={isSubmitting}
+                  className="w-full p-4 border border-opacity-20 rounded-lg disabled:opacity-50"
                 />
                 <input
                   type="email"
@@ -91,7 +133,8 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-4 border border-opacity-20 rounded-lg"
+                  disabled={isSubmitting}
+                  className="w-full p-4 border border-opacity-20 rounded-lg disabled:opacity-50"
                 />
               </div>
               <input
@@ -101,7 +144,8 @@ const Contact = () => {
                 value={formData.subject}
                 onChange={handleInputChange}
                 required
-                className="w-full p-4 border border-opacity-20 rounded-lg mb-4"
+                disabled={isSubmitting}
+                className="w-full p-4 border border-opacity-20 rounded-lg mb-4 disabled:opacity-50"
               />
               <textarea
                 name="message"
@@ -110,10 +154,25 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleInputChange}
                 required
-                className="w-full p-4 border border-opacity-20 rounded-lg mb-4"
+                disabled={isSubmitting}
+                className="w-full p-4 border border-opacity-20 rounded-lg mb-4 disabled:opacity-50"
               />
-              <button type="submit" className="bg-blue-600 text-white py-3 px-6 rounded-full text-lg transition duration-300 hover:bg-gray-800">
-                <Send size={16} className="inline-block mr-2" /> Send Message
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="bg-blue-600 text-white py-3 px-6 rounded-full text-lg transition duration-300 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader size={16} className="inline-block mr-2 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} className="inline-block mr-2" />
+                    Send Message
+                  </>
+                )}
               </button>
             </form>
           </div>

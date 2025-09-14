@@ -10,11 +10,16 @@ import LayoutHandling from './LayoutFolder/Layout';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import ForgotPasswordModel from './components/ForgotPasswordModel';
+import DashboardLayout from './Dashboardkapee/DashboardLayout';
+import Navbar from './Dashboardkapee/NavbarDashboard';
+import Sidebar from './Dashboardkapee/Sidebar';
+import './index.css'; // or './App.css'
+import DashboardOutlet from './Dashboardkapee/DashboardOutlet';
 
 function App() {
   return (
     <BrowserRouter>
-      <NavbarPage />
+      {/* <NavbarPage /> */}
       <Routes>
         <Route path="/" element={<LayoutHandling />}>
           <Route index element={<Homepage />} />
@@ -28,9 +33,16 @@ function App() {
           <Route path="forgotpasswordmodel" element={<ForgotPasswordModel onClose={() => {}} />} />
           <Route path="contact" element={<Contact />} />
           <Route path="footer" element={<FooterSide />} />
+          
+         
         </Route>
+         {/* Dashboard Routes */}
+          <Route path="/Dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardOutlet />} />
+            <Route path="sidebar" element={<Sidebar />} />
+            <Route path="navbar" element={<Navbar />} />
+          </Route>
       </Routes>
-     
     </BrowserRouter>
   );
 }
